@@ -10,7 +10,9 @@ class Login extends Component {
     event.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        console.log('提交登录的ajax请求', values);
+        console.log('提交登陆的ajax请求', values);
+      }else {
+        console.log('检验失败!', err);
       }
     });
   };
@@ -18,14 +20,14 @@ class Login extends Component {
   validator = (rule, value, callback) => {
     if (!value) {
       callback('请输入密码');
-    } else if (value.length < 4) {
-      callback('密码的最小长度为4位');
     } else if (value.length > 12) {
-      callback('密码的最大长度为12位');
+      callback('密码的长度最多为12位');
+    } else if (value.length < 4) {
+      callback('密码的长度最少为4位');
     } else if (!/^[a-zA-Z0-9_]+$/.test(value)) {
       callback('密码必须由英文、数字或下划线组成');
     } else {
-      callback();
+      callback('');
     }
   };
 
@@ -41,21 +43,15 @@ class Login extends Component {
           <h2>用户登录</h2>
           <Form onSubmit={this.handleSubmit} className="login-form">
             <Form.Item>
-              {/*
-               用户名/密码的的合法性要求
-               1). 必须输入
-               2). 必须大于等于4位
-               3). 必须小于等于12位
-               4). 必须是英文、数字或下划线组成
-               */}
               {
                 getFieldDecorator('username', {
+                  initialValue: 'admin',
                   rules: [
                     {required: true, whitespace: true, message: '请输入用户名'},
-                    {min: 4, message: '用户名的最小长度为4位'},
-                    {max: 12, message: '用户名的最大长度为12位'},
+                    {max: 12, message: '用户名长度最多为12位'},
+                    {min: 4, message: '用户名长度最少为4位',},
                     {pattern: /^[a-zA-Z0-9_]+$/, message: '用户名必须由英文、数字或下划线组成'}
-                  ],
+                  ]
                 })(
                   <Input
                     prefix={<Icon type="user" style={{color: 'rgba(0,0,0,.25)'}}/>}
@@ -66,10 +62,10 @@ class Login extends Component {
             </Form.Item>
             <Form.Item>
               {
-                getFieldDecorator('password', {
-                  rules: [
-                    {validator: this.validator}
-                  ],
+                getFieldDecorator('paddword', {
+                  rules: [{
+                    validator: this.validator
+                  }]
                 })(
                   <Input
                     prefix={<Icon type="lock" style={{color: 'rgba(0,0,0,.25)'}}/>}
