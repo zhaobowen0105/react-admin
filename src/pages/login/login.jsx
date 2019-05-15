@@ -8,8 +8,6 @@ import {reqLogin} from '../../api/index';
 import storageUtils from '../../utils/storageUtils';
 import memoryUtils from '../../utils/memoryUtils';
 
-const Item = Form.Item;
-
 class Login extends Component {
 
   handleSubmit = (event) => {
@@ -18,13 +16,12 @@ class Login extends Component {
       if (!err) {
         const {username, password} = values;
         const result = await reqLogin(username, password);
-        const user = result.data;
-        storageUtils.saveUser(user);
-        memoryUtils.user = user;
-        if(result.status === 0 ){
+        // storageUtils.saveUser(result.data);
+        // memoryUtils.user = result.data;
+        if (result.status === 0) {
           message.success('登录成功');
           this.props.history.replace('/')
-        }else {
+        } else {
           message.error(result.msg, 2);
         }
       } else {
@@ -43,14 +40,14 @@ class Login extends Component {
     } else if (!/^[a-zA-Z0-9_]+$/.test(value)) {
       callback('密码必须由英文、数字或下划线组成');
     } else {
-      callback('');
+      callback();
     }
   };
 
   render() {
-    if (memoryUtils.user && memoryUtils.user._id) {
-      return <Redirect to='/'/>
-    }
+    /*if (memoryUtils.user && memoryUtils.user._id) {
+     return <Redirect to='/'/>
+     }*/
     const {getFieldDecorator} = this.props.form;
     return (
       <div className="login">
@@ -81,7 +78,7 @@ class Login extends Component {
             </Form.Item>
             <Form.Item>
               {
-                getFieldDecorator('paddword', {
+                getFieldDecorator('password', {
                   rules: [{
                     validator: this.validator
                   }]

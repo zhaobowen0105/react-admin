@@ -10,6 +10,6 @@ export default class Admin extends Component{
       return <Redirect to='/login'/>
     }
 
-    return <div>admin</div>
+    return <div>success</div>
   }
 }
