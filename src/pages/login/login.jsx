@@ -1,54 +1,55 @@
-import React, {Component} from 'react';
-import {Redirect} from 'react-router-dom';
-import {Form, Icon, Input, Button, message} from 'antd';
+import React, {Component} from 'react'
+import {Redirect} from 'react-router-dom'
+import {Form, Icon, Input, Button, message} from 'antd'
 
-import logo from './images/logo.png';
-import './login.less';
-import {reqLogin} from '../../api/index';
-import storageUtils from '../../utils/storageUtils';
-import memoryUtils from '../../utils/memoryUtils';
+import logo from './images/logo.png'
+import './login.less'
+import {reqLogin} from '../../api/index'
+import storageUtils from '../../utils/storageUtils'
+import memoryUtils from '../../utils/memoryUtils'
 
 class Login extends Component {
 
   handleSubmit = (event) => {
-    event.preventDefault();
+    event.preventDefault()
     this.props.form.validateFields(async (err, values) => {
       if (!err) {
-        const {username, password} = values;
-        const result = await reqLogin(username, password);
-        // storageUtils.saveUser(result.data);
-        // memoryUtils.user = result.data;
+        const {username, password} = values
+        const result = await reqLogin(username, password)
         if (result.status === 0) {
-          message.success('登录成功');
+          const user = result.data
+          storageUtils.saveUser(user)
+          memoryUtils.user = user
+          message.success('登录成功')
           this.props.history.replace('/')
         } else {
-          message.error(result.msg, 2);
+          message.error(result.msg, 2)
         }
       } else {
-        console.log('检验失败!', err);
+        console.log('检验失败!', err)
       }
-    });
-  };
-
+    })
+  }
+  // 自定义校验
   validator = (rule, value, callback) => {
     if (!value) {
-      callback('请输入密码');
+      callback('请输入密码')
     } else if (value.length > 12) {
-      callback('密码的长度最多为12位');
+      callback('密码的长度最多为12位')
     } else if (value.length < 4) {
-      callback('密码的长度最少为4位');
+      callback('密码的长度最少为4位')
     } else if (!/^[a-zA-Z0-9_]+$/.test(value)) {
-      callback('密码必须由英文、数字或下划线组成');
+      callback('密码必须由英文、数字或下划线组成')
     } else {
-      callback();
+      callback()
     }
-  };
+  }
 
   render() {
-    /*if (memoryUtils.user && memoryUtils.user._id) {
-     return <Redirect to='/'/>
-     }*/
-    const {getFieldDecorator} = this.props.form;
+    if (memoryUtils.user && memoryUtils.user._id) {
+      return <Redirect to='/'/>
+    }
+    const {getFieldDecorator} = this.props.form
     return (
       <div className="login">
         <header className="login-header">
@@ -60,6 +61,13 @@ class Login extends Component {
           <Form onSubmit={this.handleSubmit} className="login-form">
             <Form.Item>
               {
+                /*
+                 用户名/密码的的合法性要求
+                 1). 必须输入
+                 2). 必须大于等于4位
+                 3). 必须小于等于12位
+                 4). 必须是英文、数字或下划线组成
+                 */
                 getFieldDecorator('username', {
                   initialValue: 'admin',
                   rules: [
@@ -102,5 +110,9 @@ class Login extends Component {
     )
   }
 }
-const WrapLogin = Form.create()(Login);
-export default WrapLogin;
+/*
+ 包装Form组件生成一个新的组件: Form(Login)
+ 新组件会向Form组件传递一个强大的对象属性: form
+ */
+const WrapLogin = Form.create()(Login)
+export default WrapLogin
