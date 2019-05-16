@@ -40,10 +40,7 @@ class Header extends Component {
         storageUtils.removeUser();
         memoryUtils.user = {};
         this.props.history.replace('/login');
-      },
-      onCancel() {
-        console.log('Cancel');
-      },
+      }
     });
   };
 

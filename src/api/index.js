@@ -1,5 +1,6 @@
 import ajax from './ajax';
-import jsonp from 'jsonp'
+import jsonp from 'jsonp';
+import {message} from 'antd';
 
 export const reqLogin = (username, password) => ajax('/login', {username, password}, 'POST');
 
@@ -13,9 +14,10 @@ export const reqWeather = city => {
     }, (error, response) => {
       if (!error && response.status === 'success') {
         const {dayPictureUrl, weather} = response.results[0].weather_data[0];
+        message.success('获取天气信息成功')
         resolve({dayPictureUrl, weather})
       } else {
-        alert('获取天气信息失败')
+        message.error('获取天气信息失败')
       }
     })
   })
