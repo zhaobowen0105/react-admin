@@ -30,7 +30,7 @@ export default class Admin extends Component {
         </Sider>
         <Layout>
           <Header>Header</Header>
-          <Content>
+          <Content style={{backgroundColor: 'white', margin: '18px 18px 0'}}>
             <Switch>
               <Route path='/home' component={Home}/>
               <Route path='/category' component={Category}/>
@@ -43,7 +43,7 @@ export default class Admin extends Component {
               <Redirect to='/home' />
             </Switch>
           </Content>
-          <Footer>Footer</Footer>
+          <Footer style={{textAlign: 'center', color: '#aaa'}}>推荐使用谷歌浏览器，可以获得更佳页面操作体验</Footer>
         </Layout>
       </Layout>
     )

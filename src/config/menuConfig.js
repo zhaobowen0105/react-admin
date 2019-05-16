@@ -21,7 +21,6 @@ const menuList = [
       },
     ]
   },
-
   {
     title: '用户管理',
     key: '/user',
@@ -32,7 +31,6 @@ const menuList = [
     key: '/role',
     icon: 'safety',
   },
-
   {
     title: '图形图表',
     key: '/charts',
@@ -55,6 +53,6 @@ const menuList = [
       },
     ]
   },
-]
+];
 
 export default menuList
