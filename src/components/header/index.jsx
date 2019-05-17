@@ -1,35 +1,37 @@
-import React, {Component} from 'react';
-import {withRouter} from 'react-router-dom';
+import React, { Component } from 'react';
 import {Modal} from 'antd';
+import {withRouter} from 'react-router-dom';
 
-import storageUtils from '../../utils/storageUtils';
-import memoryUtils from '../../utils/memoryUtils';
 import LinkButton from '../link-button';
+import memoryUtils from '../../utils/memoryUtils';
+import storageUtils from '../../utils/storageUtils';
 import {formateDate} from '../../utils/dateUtils';
-import {reqWeather} from '../../api';
 import menuList from '../../config/menuConfig';
+import {reqWeather} from '../../api'
 import './index.less';
 
-class Header extends Component {
+class Header extends Component{
+
   state = {
-    sysTime: formateDate(Date.now()),
+    currentTime: formateDate(Date.now()),
     dayPictureUrl: '',
-    weather: ''
+    weather: '',
   };
 
   getWeather = async () => {
     const {dayPictureUrl, weather} = await reqWeather('北京');
     this.setState({
       dayPictureUrl,
-      weather
+      weather,
     })
   };
 
-  getSysTime = () => {
-    this.interval = setInterval(() => {
+  getTime = () => {
+    this.intervalId = setInterval(() => {
+      const currentTime = formateDate(Date.now())
       this.setState({
-        sysTime: formateDate(Date.now())
-      })
+        currentTime
+      });
     }, 1000)
   };
 
@@ -39,52 +41,54 @@ class Header extends Component {
       onOk: () => {
         storageUtils.removeUser();
         memoryUtils.user = {};
-        this.props.history.replace('/login');
+        this.props.history.replace('/login')
       }
     });
   };
 
-  getTitle = (path) => {
+  getTitle = () => {
+    const path = this.props.location.pathname;
     let title;
-    menuList.forEach(menu => {
-      if (menu.key === path) {
-        title = menu.title
-      } else if (menu.children) {
-        menu.children.forEach(item => {
-          if (path.indexOf(item.key) === 0) {
-            title = item.title
-          }
-        })
+    menuList.forEach((item) => {
+      if(item.key === path){
+        title = item.title;
+      }else if(item.children){
+        const cItem = item.children.find((cItem) => {
+          return cItem.key === path;
+        });
+        if(cItem){
+          title = cItem.title;
+        }
       }
     });
     return title;
   };
 
   componentDidMount() {
-    this.getSysTime();
+    this.getTime();
     this.getWeather();
   }
 
   componentWillUnmount() {
-    clearInterval(this.interval);
+    clearInterval(this.intervalId);
   }
 
   render() {
-    const {dayPictureUrl, weather, sysTime} = this.state;
-    const user = storageUtils.getUser();
-    const path = this.props.location.pathname;
-    const title = this.getTitle(path);
+    const {currentTime, dayPictureUrl, weather} = this.state;
+    const {username} = memoryUtils.user;
     return (
       <div className="header">
         <div className="header-top">
-          <span>欢迎, {user.username}</span>
+          <span>欢迎, {username}</span>
           <LinkButton onClick={this.logout}>退出</LinkButton>
         </div>
         <div className="header-bottom">
-          <div className="header-bottom-left">{title}</div>
+          <div className="header-bottom-left">
+            {this.getTitle()}
+          </div>
           <div className="header-bottom-right">
-            <span>{sysTime}</span>
-            <img src={dayPictureUrl} alt="dayPictureUrl"/>
+            <span>{currentTime}</span>
+            <img src={dayPictureUrl} alt="weather"/>
             <span>{weather}</span>
           </div>
         </div>
@@ -93,4 +97,4 @@ class Header extends Component {
   }
 }
 
-export default withRouter(Header)
+export default withRouter(Header);
