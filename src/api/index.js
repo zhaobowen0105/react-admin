@@ -43,3 +43,10 @@ export const reqSearchProduct = ({searchName, searchType, pageSize, pageNum}) =>
 })
 // 获取一个分类
 export const reqCategory = (categoryId) => ajax('/manage/category/info', {categoryId})
+// 更新商品的状态(上架/下架)
+export const reqUpdateStatus = (productId, status) => ajax('/manage/product/updateStatus', {productId, status}, 'POST')
+// 删除图片
+export const reqDeleteImg = (name) => ajax('/manage/img/delete', {name}, 'POST')
+
+
+
