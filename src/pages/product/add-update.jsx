@@ -96,6 +96,8 @@ class AddUpdate extends Component {
   submit = () => {
     this.props.form.validateFields((error, values) => {
       if (!error) {
+
+        const imgs = this.pw.current.getImgs()
         alert('发送ajax请求')
       }
     })
