@@ -1,12 +1,12 @@
-import React, {Component} from 'react';
+import React, {Component} from 'react'
 import {Link, withRouter} from 'react-router-dom'
-import {Menu, Icon} from 'antd';
+import {Menu, Icon} from 'antd'
 
-import menuList from '../../config/menuConfig';
-import logo from '../../assets/images/logo.png';
-import './index.less';
+import menuList from '../../config/menuConfig'
+import logo from '../../assets/images/logo.png'
+import './index.less'
 
-const SubMenu = Menu.SubMenu;
+const SubMenu = Menu.SubMenu
 
 class LeftNav extends Component {
 
@@ -37,10 +37,10 @@ class LeftNav extends Component {
         )
       }
     })
-  };
+  }
 
   getMenuNodes = (menuList) => {
-    const path = this.props.location.pathname;
+    const path = this.props.location.pathname
     return menuList.reduce((pre, item) => {
       if (!item.children) {
         pre.push((
@@ -53,9 +53,9 @@ class LeftNav extends Component {
         ))
       } else {
 
-        const cItem = item.children.find((cItem) => path.indexOf(cItem.key)===0);
+        const cItem = item.children.find((cItem) => path.indexOf(cItem.key)===0)
         if (cItem) {
-          this.openKey = item.key;
+          this.openKey = item.key
         }
 
         pre.push((
@@ -72,20 +72,20 @@ class LeftNav extends Component {
           </SubMenu>
         ))
       }
-      return pre;
+      return pre
     }, [])
-  };
+  }
 
   componentWillMount() {
-    this.menuNodes = this.getMenuNodes(menuList);
+    this.menuNodes = this.getMenuNodes(menuList)
   }
 
   render() {
-    let path = this.props.location.pathname;
+    let path = this.props.location.pathname
     if (path.indexOf('/product') === 0) {
       path = '/product'
     }
-    const openKey = this.openKey;
+    const openKey = this.openKey
     return (
       <div className="left-nav">
         <Link to="/" className="left-nav-header">

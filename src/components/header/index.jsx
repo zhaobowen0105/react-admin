@@ -1,14 +1,14 @@
-import React, { Component } from 'react';
-import {Modal} from 'antd';
-import {withRouter} from 'react-router-dom';
+import React, { Component } from 'react'
+import {Modal} from 'antd'
+import {withRouter} from 'react-router-dom'
 
-import LinkButton from '../link-button';
-import memoryUtils from '../../utils/memoryUtils';
-import storageUtils from '../../utils/storageUtils';
-import {formateDate} from '../../utils/dateUtils';
-import menuList from '../../config/menuConfig';
+import LinkButton from '../link-button'
+import memoryUtils from '../../utils/memoryUtils'
+import storageUtils from '../../utils/storageUtils'
+import {formateDate} from '../../utils/dateUtils'
+import menuList from '../../config/menuConfig'
 import {reqWeather} from '../../api'
-import './index.less';
+import './index.less'
 
 class Header extends Component{
 
@@ -16,69 +16,69 @@ class Header extends Component{
     currentTime: formateDate(Date.now()),
     dayPictureUrl: '',
     weather: '',
-  };
+  }
 
   getWeather = async () => {
-    const {dayPictureUrl, weather} = await reqWeather('北京');
+    const {dayPictureUrl, weather} = await reqWeather('北京')
     this.setState({
       dayPictureUrl,
       weather,
     })
-  };
+  }
 
   getTime = () => {
     this.intervalId = setInterval(() => {
       const currentTime = formateDate(Date.now())
       this.setState({
         currentTime
-      });
+      })
     }, 1000)
-  };
+  }
 
   logout = () => {
     Modal.confirm({
       title: '确定退出吗?',
       onOk: () => {
-        storageUtils.removeUser();
-        memoryUtils.user = {};
+        storageUtils.removeUser()
+        memoryUtils.user = {}
         this.props.history.replace('/login')
       }
-    });
-  };
+    })
+  }
 
   getTitle = () => {
-    let path = this.props.location.pathname;
+    let path = this.props.location.pathname
     if(path.indexOf('/product') === 0){
       path = '/product'
     }
-    let title;
+    let title
     menuList.forEach((item) => {
       if(item.key === path){
-        title = item.title;
+        title = item.title
       }else if(item.children){
         const cItem = item.children.find((cItem) => {
-          return cItem.key === path;
-        });
+          return cItem.key === path
+        })
         if(cItem){
-          title = cItem.title;
+          title = cItem.title
         }
       }
-    });
-    return title;
-  };
+    })
+    return title
+  }
 
   componentDidMount() {
-    this.getTime();
-    this.getWeather();
+    this.getTime()
+    this.getWeather()
   }
 
   componentWillUnmount() {
-    clearInterval(this.intervalId);
+    clearInterval(this.intervalId)
   }
 
   render() {
-    const {currentTime, dayPictureUrl, weather} = this.state;
-    const {username} = memoryUtils.user;
+    const {currentTime, dayPictureUrl, weather} = this.state
+    const {username} = memoryUtils.user
     return (
       <div className="header">
         <div className="header-top">
@@ -100,4 +100,4 @@ class Header extends Component{
   }
 }
 
-export default withRouter(Header);
+export default withRouter(Header)

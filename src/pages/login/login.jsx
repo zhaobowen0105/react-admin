@@ -1,26 +1,26 @@
-import React, {Component} from 'react';
-import {Redirect} from 'react-router-dom';
-import {Form, Icon, Input, Button, message} from 'antd';
+import React, {Component} from 'react'
+import {Redirect} from 'react-router-dom'
+import {Form, Icon, Input, Button, message} from 'antd'
 
-import logo from '../../assets/images/logo.png';
-import './login.less';
-import {reqLogin} from '../../api/index';
-import storageUtils from '../../utils/storageUtils';
-import memoryUtils from '../../utils/memoryUtils';
+import logo from '../../assets/images/logo.png'
+import './login.less'
+import {reqLogin} from '../../api/index'
+import storageUtils from '../../utils/storageUtils'
+import memoryUtils from '../../utils/memoryUtils'
 
 class Login extends Component {
 
   handleSubmit = (event) => {
-    event.preventDefault();
+    event.preventDefault()
     this.props.form.validateFields(async (err, values) => {
       if (!err) {
-        const {username, password} = values;
-        const result = await reqLogin(username, password);
+        const {username, password} = values
+        const result = await reqLogin(username, password)
         if (result.status === 0) {
-          const user = result.data;
-          storageUtils.saveUser(user);
-          memoryUtils.user = user;
-          message.success('登录成功');
+          const user = result.data
+          storageUtils.saveUser(user)
+          memoryUtils.user = user
+          message.success('登录成功')
           this.props.history.replace('/')
         } else {
           message.error(result.msg, 2)
@@ -29,7 +29,7 @@ class Login extends Component {
         console.log('检验失败!', err)
       }
     })
-  };
+  }
   // 自定义校验
   validator = (rule, value, callback) => {
     if (!value) {
@@ -43,13 +43,13 @@ class Login extends Component {
     } else {
       callback()
     }
-  };
+  }
 
   render() {
     if (memoryUtils.user && memoryUtils.user._id) {
       return <Redirect to='/'/>
     }
-    const {getFieldDecorator} = this.props.form;
+    const {getFieldDecorator} = this.props.form
     return (
       <div className="login">
         <header className="login-header">
@@ -114,5 +114,5 @@ class Login extends Component {
  包装Form组件生成一个新的组件: Form(Login)
  新组件会向Form组件传递一个强大的对象属性: form
  */
-const WrapLogin = Form.create()(Login);
+const WrapLogin = Form.create()(Login)
 export default WrapLogin

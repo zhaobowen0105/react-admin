@@ -49,7 +49,7 @@ export const reqUpdateStatus = (productId, status) => ajax('/manage/product/upda
 export const reqDeleteImg = (name) => ajax('/manage/img/delete', {name}, 'POST')
 
 // 添加/修改商品
-export const reqAddOrUpdateProduct = (product) => ajax('/manage/product/' + ( product._id ? 'update' : 'add'), product, 'POST')
+export const reqAddOrUpdateProduct = (product) => ajax('/manage/product/' + (product._id ? 'update' : 'add'), product, 'POST')
 
 
 

@@ -1,11 +1,11 @@
-import React, {Component} from 'react';
+import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import {
   Form,
   Input,
 } from 'antd'
 
-const Item = Form.Item;
+const Item = Form.Item
 
 
 class UpdateForm extends Component {
@@ -13,14 +13,14 @@ class UpdateForm extends Component {
   static propTypes = {
     categoryName: PropTypes.string.isRequired,
     setForm: PropTypes.func.isRequired
-  };
+  }
 
   componentWillMount(){
     this.props.setForm(this.props.form)
   }
 
   render() {
-    const { categoryName } = this.props;
+    const { categoryName } = this.props
     const { getFieldDecorator } = this.props.form
     return (
       <Form>

@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component} from 'react'
 import {
   Card,
   Icon,
@@ -53,7 +53,7 @@ class AddUpdate extends Component {
 
     const {isUpdate, product} = this
     const {pCategoryId} = product
-    if (isUpdate && pCategoryId !== 0) {
+    if (isUpdate && pCategoryId !== '0') {
       const subCategorys = await this.getCategorys(pCategoryId)
       const childOptions = subCategorys.map((c) => ({
         value: c._id,
@@ -144,7 +144,7 @@ class AddUpdate extends Component {
   }
 
   componentWillMount() {
-    const product = this.props.location.state;
+    const product = this.props.location.state
     this.isUpdate = !!product
     this.product = product || {}
   }

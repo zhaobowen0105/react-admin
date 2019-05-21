@@ -1,5 +1,5 @@
 import React from 'react'
-import {Upload, Icon, Modal, message} from 'antd';
+import {Upload, Icon, Modal, message} from 'antd'
 import PropTypes from 'prop-types'
 
 import {reqDeleteImg} from '../../api'
@@ -26,7 +26,7 @@ export default class PicturesWall extends React.Component {
       previewVisible: false,
       previewImage: '',
       fileList
-    };
+    }
   }
 
   /*
@@ -39,14 +39,14 @@ export default class PicturesWall extends React.Component {
   /*
    隐藏Modal
    */
-  handleCancel = () => this.setState({previewVisible: false});
+  handleCancel = () => this.setState({previewVisible: false})
 
   handlePreview = file => {
     this.setState({
       previewImage: file.url || file.thumbUrl,
       previewVisible: true,
-    });
-  };
+    })
+  }
 
   handleChange = async ({file, fileList}) => {
 
@@ -71,16 +71,16 @@ export default class PicturesWall extends React.Component {
     }
 
     this.setState({fileList})
-  };
+  }
 
   render() {
-    const {previewVisible, previewImage, fileList} = this.state;
+    const {previewVisible, previewImage, fileList} = this.state
     const uploadButton = (
       <div>
         <Icon type="plus"/>
         <div>Upload</div>
       </div>
-    );
+    )
     return (
       <div>
         <Upload
@@ -98,6 +98,6 @@ export default class PicturesWall extends React.Component {
           <img alt="example" style={{width: '100%'}} src={previewImage}/>
         </Modal>
       </div>
-    );
+    )
   }
 }
