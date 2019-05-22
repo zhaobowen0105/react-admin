@@ -25,7 +25,7 @@ class LeftNav extends Component {
     return false
   }
 
-  getMenuNodes_map = (menuList) => {
+  /*getMenuNodes_map = (menuList) => {
     return menuList.map((item) => {
       if (!item.children) {
         return (
@@ -52,7 +52,7 @@ class LeftNav extends Component {
         )
       }
     })
-  }
+  }*/
 
   getMenuNodes = (menuList) => {
     const path = this.props.location.pathname
