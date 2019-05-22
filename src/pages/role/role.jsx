@@ -13,6 +13,7 @@ import {formateDate} from '../../utils/dateUtils'
 import AddForm from './add-form'
 import AuthForm from './auth-form'
 import memoryUtils from '../../utils/memoryUtils'
+import storageUtils from '../../utils/storageUtils'
 
 export default class Role extends Component {
   constructor(props){
@@ -107,10 +108,17 @@ export default class Role extends Component {
 
     const result = await reqUpdateRole(role)
     if(result.status === 0){
-      message.success('设置角色权限成功')
-      this.setState({
-        roles: [...this.state.roles]
-      })
+      if(role._id === memoryUtils.user.role._id){
+        memoryUtils.user = {}
+        storageUtils.removeUser()
+        message.success('角色权限改变,请重新登录')
+        this.props.history.replace()
+      } else {
+        message.success('设置角色权限成功')
+        this.setState({
+          roles: [...this.state.roles]
+        })
+      }
     }
   }
 
