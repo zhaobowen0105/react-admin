@@ -1,13 +1,13 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
+import React from 'react'
+import ReactDOM from 'react-dom'
 
-import App from './App';
-import storageUtils from './utils/storageUtils';
-import memoryUtils from './utils/memoryUtils';
+import App from './App'
+import storageUtils from './utils/storageUtils'
+import memoryUtils from './utils/memoryUtils'
 
-const user = storageUtils.getUser();
+const user = storageUtils.getUser()
 if(user._id){
-  memoryUtils.user = user;
+  memoryUtils.user = user
 }
 
-ReactDOM.render(<App/>, document.getElementById('root'));
+ReactDOM.render(<App/>, document.getElementById('root'))

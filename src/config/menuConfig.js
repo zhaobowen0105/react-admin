@@ -3,6 +3,7 @@ const menuList = [
     title: '首页', // 菜单标题名称
     key: '/home', // 对应的path
     icon: 'home', // 图标名称
+    isPublic: true
   },
   {
     title: '商品',
@@ -10,7 +11,7 @@ const menuList = [
     icon: 'appstore',
     children: [ // 子菜单列表
       {
-        title: '品类管理',
+        title: '分类管理',
         key: '/category',
         icon: 'bars'
       },
@@ -53,6 +54,6 @@ const menuList = [
       },
     ]
   },
-];
+]
 
 export default menuList
