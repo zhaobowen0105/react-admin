@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, {Component} from 'react'
 import {Modal} from 'antd'
 import {withRouter} from 'react-router-dom'
 
@@ -10,7 +10,7 @@ import menuList from '../../config/menuConfig'
 import {reqWeather} from '../../api'
 import './index.less'
 
-class Header extends Component{
+class Header extends Component {
 
   state = {
     currentTime: formateDate(Date.now()),
@@ -48,18 +48,18 @@ class Header extends Component{
 
   getTitle = () => {
     let path = this.props.location.pathname
-    if(path.indexOf('/product') === 0){
+    if (path.indexOf('/product') === 0) {
       path = '/product'
     }
     let title
     menuList.forEach((item) => {
-      if(item.key === path){
+      if (item.key === path) {
         title = item.title
-      }else if(item.children){
+      } else if (item.children) {
         const cItem = item.children.find((cItem) => {
           return cItem.key === path
         })
-        if(cItem){
+        if (cItem) {
           title = cItem.title
         }
       }

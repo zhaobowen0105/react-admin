@@ -14,7 +14,6 @@ import AddForm from './add-form'
 import UpdateForm from './update-form'
 
 export default class Catepory extends Component {
-
   state = {
     loading: false, // 是否正在获取数据中
     categorys: [], // 一级分类列表
@@ -23,10 +22,7 @@ export default class Catepory extends Component {
     parentName: '', // 当前需要显示的分类列表的父分类名称
     showStatus: 0, // 标识添加/更新的确认框是否显示, 0: 都不显示, 1: 显示添加, 2: 显示更新
   }
-
-  /*
-   异步获取一级/二级分类列表显示
-   */
+  /*异步获取一级/二级分类列表显示*/
   getCategorys = async (parentId) => {
     this.setState({loading: true})
     parentId = parentId || this.state.parentId
@@ -47,8 +43,6 @@ export default class Catepory extends Component {
       message.error('获取分类列表失败')
     }
   }
-
-
   /*初始化Table所有列的数组*/
   initColumns = () => {
     this.columns = [
@@ -64,18 +58,17 @@ export default class Catepory extends Component {
             <LinkButton onClick={() => {
               this.showUpdate(category)
             }}>修改分类</LinkButton>
-            {this.state.parentId === '0' ? <LinkButton onClick={() => {
-              this.showSubCategorys(category)
-            }}>查看子分类</LinkButton> : null}
-
+            {
+              this.state.parentId === '0' ? <LinkButton onClick={() => {
+                this.showSubCategorys(category)
+              }}>查看子分类</LinkButton> : null
+            }
           </span>
         )
       }
     ]
   }
-  /*
-   显示指定一级分类对象的二子列表
-   */
+  /*显示指定一级分类对象的二子列表*/
   showSubCategorys = (category) => {
     this.setState({
       parentId: category._id,
@@ -84,9 +77,7 @@ export default class Catepory extends Component {
       this.getCategorys()
     })
   }
-  /*
-   显示指定一级分类列表
-   */
+  /*显示指定一级分类列表*/
   showFirstCategroys = () => {
     this.setState({
       parentId: '0',
@@ -94,18 +85,13 @@ export default class Catepory extends Component {
       subCategorys: []
     })
   }
-  /*
-   显示添加的确认框
-   */
+  /*显示添加的确认框*/
   showAdd = () => {
     this.setState({
       showStatus: 1
     })
   }
-
-  /*
-   显示修改的确认框
-   */
+  /*显示修改的确认框*/
   showUpdate = (category) => {
     // 保存分类对象
     this.category = category
@@ -114,18 +100,16 @@ export default class Catepory extends Component {
       showStatus: 2
     })
   }
-
-  /*
-   添加分类
-   */
+  /*添加分类*/
   addCategory = () => {
-    this.form.validateFields(async (err, values) => {
-      if(!err){
+    this.addForm.validateFields(async (err, values) => {
+      console.log(values)
+      if (!err) {
         this.setState({
           showStatus: 0
         })
         const {parentId, categoryName} = values
-        this.form.resetFields()
+        this.addForm.resetFields()
         const result = await reqAddCategory(categoryName, parentId)
         if (result.status === 0) {
           if (parentId === this.state.parentId) {
@@ -137,12 +121,10 @@ export default class Catepory extends Component {
       }
     })
   }
-  /*
-   更新分类
-   */
+  /*更新分类*/
   updateCategory = () => {
-    this.form.validateFields(async (err, values) => {
-      if(!err){
+    this.updateForm.validateFields(async (err, values) => {
+      if (!err) {
         // 1. 隐藏确定框
         this.setState({
           showStatus: 0
@@ -153,9 +135,10 @@ export default class Catepory extends Component {
         const {categoryName} = values
 
         // 清除输入数据
-        this.form.resetFields()
+        this.updateForm.resetFields()
 
         // 2. 发请求更新分类
+        console.log(categoryId, categoryName)
         const result = await reqUpdateCategory({categoryId, categoryName})
         if (result.status === 0) {
           // 3. 重新显示列表
@@ -164,12 +147,11 @@ export default class Catepory extends Component {
       }
     })
   }
-  /*
-   响应点击取消: 隐藏确定框
-   */
+  /*响应点击取消: 隐藏确定框*/
   handleCancel = () => {
     // 清除输入数据
-    this.form.resetFields()
+    this.updateForm && this.updateForm.resetFields()
+    this.addForm && this.addForm.resetFields()
     // 隐藏确认框
     this.setState({
       showStatus: 0
@@ -220,7 +202,7 @@ export default class Catepory extends Component {
           <AddForm
             categorys={categorys}
             parentId={parentId}
-            setForm={form => this.form = form}
+            setForm={form => this.addForm = form}
           />
         </Modal>
 
@@ -232,7 +214,7 @@ export default class Catepory extends Component {
         >
           <UpdateForm
             categoryName={category.name}
-            setForm={form => this.form = form }
+            setForm={form => this.updateForm = form }
           />
         </Modal>
       </Card>

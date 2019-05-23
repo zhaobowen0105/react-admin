@@ -17,47 +17,46 @@ class LeftNav extends Component {
     const {key, isPublic} = item
     const menus = memoryUtils.user.role.menus
     const username = memoryUtils.user.username
-    if (username === 'admin' || isPublic || menus.indexOf(key) !== -1){
+    if (username === 'admin' || isPublic || menus.indexOf(key) !== -1) {
       return true
-    }else if(item.children){
+    } else if (item.children) {
       return !!item.children.find(child => menus.indexOf(child.key) !== -1)
     }
     return false
   }
 
   /*getMenuNodes_map = (menuList) => {
-    return menuList.map((item) => {
-      if (!item.children) {
-        return (
-          <Menu.Item key={item.key}>
-            <Link to={item.key}>
-              <Icon type={item.icon}/>
-              <span>{item.title}</span>
-            </Link>
-          </Menu.Item>
-        )
-      } else {
-        return (
-          <SubMenu
-            key={item.key}
-            title={
-              <span>
-                <Icon type={item.icon}/>
-                <span>{item.title}</span>
-              </span>
-            }
-          >
-            {this.getMenuNodes(item.children)}
-          </SubMenu>
-        )
-      }
-    })
-  }*/
+   return menuList.map((item) => {
+   if (!item.children) {
+   return (
+   <Menu.Item key={item.key}>
+   <Link to={item.key}>
+   <Icon type={item.icon}/>
+   <span>{item.title}</span>
+   </Link>
+   </Menu.Item>
+   )
+   } else {
+   return (
+   <SubMenu
+   key={item.key}
+   title={
+   <span>
+   <Icon type={item.icon}/>
+   <span>{item.title}</span>
+   </span>
+   }
+   >
+   {this.getMenuNodes(item.children)}
+   </SubMenu>
+   )
+   }
+   })
+   }*/
 
   getMenuNodes = (menuList) => {
     const path = this.props.location.pathname
     return menuList.reduce((pre, item) => {
-
       if (this.hasAuth(item)) {
 
         if (!item.children) {
@@ -70,12 +69,9 @@ class LeftNav extends Component {
             </Menu.Item>
           ))
         } else {
-
+          // 查找当前路由所在的子菜单项
           const cItem = item.children.find((cItem) => path.indexOf(cItem.key) === 0)
-          if (cItem) {
-            this.openKey = item.key
-          }
-
+          if (cItem) {this.openKey = item.key}
           pre.push((
             <SubMenu
               key={item.key}
@@ -98,7 +94,6 @@ class LeftNav extends Component {
   componentWillMount() {
     this.menuNodes = this.getMenuNodes(menuList)
   }
-
   render() {
     let path = this.props.location.pathname
     if (path.indexOf('/product') === 0) {
@@ -122,7 +117,8 @@ class LeftNav extends Component {
             this.menuNodes
           }
         </Menu>
-      </div>)
+      </div>
+    )
   }
 }
 

@@ -17,20 +17,6 @@ class UserForm extends Component {
     user: PropTypes.object
   }
 
-  validator = (rule, value, callback) => {
-    if (!value) {
-      callback('请输入密码')
-    } else if (value.length > 12) {
-      callback('密码的长度最多为12位')
-    } else if (value.length < 4) {
-      callback('密码的长度最少为4位')
-    } else if (!/^[a-zA-Z0-9_]+$/.test(value)) {
-      callback('密码必须由英文、数字或下划线组成')
-    } else {
-      callback()
-    }
-  }
-
   componentWillMount() {
     this.props.setForm(this.props.form)
   }
@@ -65,9 +51,12 @@ class UserForm extends Component {
               {
                 getFieldDecorator('password', {
                   initialValue: '',
-                  rules: [{
-                    validator: this.validator
-                  }]
+                  rules: [
+                    {required: true, whitespace: true, message: '请输入密码'},
+                    {max: 12, message: '密码的长度最多为12位'},
+                    {min: 4, message: '密码的长度最少为4位',},
+                    {pattern: /^[a-zA-Z0-9_]+$/, message: '密码必须由英文、数字或下划线组成'}
+                  ]
                 })(
                   <Input type="password" placeholder="请输入密码"/>
                 )

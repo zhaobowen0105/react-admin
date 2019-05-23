@@ -3,10 +3,11 @@ import {Redirect} from 'react-router-dom'
 import {Form, Icon, Input, Button, message} from 'antd'
 
 import logo from '../../assets/images/logo.png'
-import './login.less'
 import {reqLogin} from '../../api/index'
 import storageUtils from '../../utils/storageUtils'
 import memoryUtils from '../../utils/memoryUtils'
+
+import './login.less'
 
 class Login extends Component {
 
@@ -114,5 +115,4 @@ class Login extends Component {
  包装Form组件生成一个新的组件: Form(Login)
  新组件会向Form组件传递一个强大的对象属性: form
  */
-const WrapLogin = Form.create()(Login)
-export default WrapLogin
+export default Form.create()(Login)
