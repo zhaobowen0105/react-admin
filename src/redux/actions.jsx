@@ -1,8 +1,5 @@
-import React, {Component} from 'react';
+import {INCREMENT, DECREMENT} from './action-types'
 
-export default class  extends Component {
+export const increment = number => ({type: INCREMENT, data: number})
 
-  render() {
-    return
-  }
-}
+export const decrement = number => ({type: DECREMENT, data: number})

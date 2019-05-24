@@ -1,8 +1,5 @@
-import React, {Component} from 'react';
+import {createStore} from 'redux'
 
-export default class  extends Component {
+import reducer from './reducer'
 
-  render() {
-    return
-  }
-}
+export default createStore(reducer)

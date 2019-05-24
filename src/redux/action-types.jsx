@@ -1,8 +1,3 @@
-import React, {Component} from 'react';
 
-export default class  extends Component {
-
-  render() {
-    return
-  }
-}
+export const INCREMENT = 'increment'
+export const DECREMENT = 'decrement'

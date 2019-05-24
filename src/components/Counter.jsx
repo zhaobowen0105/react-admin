@@ -1,10 +1,11 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types'
-import {increment,decrement} from '../redux/actions'
 
 export default class  extends Component {
   static propTypes = {
-    store: PropTypes.object.isRequired
+    count: PropTypes.number.isRequired,
+    increment: PropTypes.func.isRequired,
+    decrement: PropTypes.func.isRequired
   }
 
   constructor(props) {
@@ -14,28 +15,28 @@ export default class  extends Component {
 
   increment = () => {
     const number = this.numberRef.current.value * 1
-    this.props.store.dispatch(increment(number))
+    this.props.increment(number)
   }
   decrement = () => {
     const number = this.numberRef.current.value * 1
-    this.props.store.dispatch(decrement(number))
+    this.props.decrement(number)
   }
   incrementIfOdd = () => {
     const number = this.numberRef.current.value * 1
-    if (this.props.store.getState() % 2 === 1) {
-      this.props.store.dispatch(increment(number))
+    if (this.props.count % 2 === 1) {
+      this.props.increment(number)
     }
   }
   incrementAsync = () => {
     const number = this.numberRef.current.value * 1
     setTimeout(() => {
-      this.props.store.dispatch(increment(number))
+      this.props.increment(number)
     }, 1000)
   }
 
 
   render() {
-    const count = this.props.store.getState()
+    const count = this.props.count
     return (
       <div>
         <br/>
