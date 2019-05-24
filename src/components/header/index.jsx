@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import {Modal} from 'antd'
 import {withRouter} from 'react-router-dom'
+import {connect} from 'react-redux'
 
 import LinkButton from '../link-button'
 import memoryUtils from '../../utils/memoryUtils'
@@ -79,6 +80,7 @@ class Header extends Component {
   render() {
     const {currentTime, dayPictureUrl, weather} = this.state
     const {username} = memoryUtils.user
+    const title = this.props.headTitle
     return (
       <div className="header">
         <div className="header-top">
@@ -86,9 +88,7 @@ class Header extends Component {
           <LinkButton onClick={this.logout}>退出</LinkButton>
         </div>
         <div className="header-bottom">
-          <div className="header-bottom-left">
-            {this.getTitle()}
-          </div>
+          <div className="header-bottom-left">{title}</div>
           <div className="header-bottom-right">
             <span>{currentTime}</span>
             <img src={dayPictureUrl} alt="weather"/>
@@ -100,4 +100,7 @@ class Header extends Component {
   }
 }
 
-export default withRouter(Header)
+export default connect(
+  state => ({headTitle: state.headTitle}),
+  {}
+)(withRouter(Header))
