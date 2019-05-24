@@ -6,17 +6,17 @@ import {
   Modal,
   message
 } from 'antd'
+import {connect} from 'react-redux'
 
 import {PAGE_SIZE} from '../../utils/constant'
 import {reqRoles, reqAddRole, reqUpdateRole} from '../../api'
 import {formateDate} from '../../utils/dateUtils'
 import AddForm from './add-form'
 import AuthForm from './auth-form'
-import memoryUtils from '../../utils/memoryUtils'
-import storageUtils from '../../utils/storageUtils'
+import {logout} from '../../redux/actions'
 
-export default class Role extends Component {
-  constructor(props){
+class Role extends Component {
+  constructor(props) {
     super(props)
     this.auth = React.createRef()
   }
@@ -75,12 +75,12 @@ export default class Role extends Component {
    */
   addRole = () => {
     this.form.validateFields(async (error, values) => {
-      if(!error){
+      if (!error) {
         this.setState({isShowAdd: false})
-        const { roleName } = values
+        const {roleName} = values
         this.form.resetFields()
         const result = await reqAddRole(roleName)
-        if(result.status === 0){
+        if (result.status === 0) {
           message.success('添加角色成功')
           const role = result.data
 
@@ -104,15 +104,13 @@ export default class Role extends Component {
 
     role.menus = menus
     role.auth_time = Date.now()
-    role.auth_name = memoryUtils.user.username
+    role.auth_name = this.props.user.username
 
     const result = await reqUpdateRole(role)
-    if(result.status === 0){
-      if(role._id === memoryUtils.user.role._id){
-        memoryUtils.user = {}
-        storageUtils.removeUser()
+    if (result.status === 0) {
+      if (role._id === this.props.user.role._id) {
+        this.props.logout()
         message.success('角色权限改变,请重新登录')
-        this.props.history.replace()
       } else {
         message.success('设置角色权限成功')
         this.setState({
@@ -131,7 +129,7 @@ export default class Role extends Component {
   }
 
   render() {
-    const { roles, role, isShowAdd, isShowAuth } = this.state
+    const {roles, role, isShowAdd, isShowAuth} = this.state
     const title = (
       <span>
         <Button type='primary' onClick={() => this.setState({isShowAdd: true})}>创建角色</Button> &nbsp;&nbsp;
@@ -188,3 +186,8 @@ export default class Role extends Component {
     )
   }
 }
+
+export default connect(
+  state => ({user: state.user}),
+  {logout}
+)(Role)

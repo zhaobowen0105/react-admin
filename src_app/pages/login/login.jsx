@@ -1,12 +1,15 @@
 import React, {Component} from 'react'
 import {Redirect} from 'react-router-dom'
-import {Form, Icon, Input, Button, message} from 'antd'
+import {
+  Form,
+  Icon,
+  Input,
+  Button
+} from 'antd'
+import {connect} from 'react-redux'
 
 import logo from '../../assets/images/logo.png'
-import {reqLogin} from '../../api/index'
-import storageUtils from '../../utils/storageUtils'
-import memoryUtils from '../../utils/memoryUtils'
-
+import {login} from '../../redux/actions'
 import './login.less'
 
 class Login extends Component {
@@ -16,16 +19,8 @@ class Login extends Component {
     this.props.form.validateFields(async (err, values) => {
       if (!err) {
         const {username, password} = values
-        const result = await reqLogin(username, password)
-        if (result.status === 0) {
-          const user = result.data
-          storageUtils.saveUser(user)
-          memoryUtils.user = user
-          message.success('登录成功')
-          this.props.history.replace('/home')
-        } else {
-          message.error(result.msg, 2)
-        }
+        this.props.login(username, password)
+
       } else {
         console.log('检验失败!', err)
       }
@@ -47,10 +42,13 @@ class Login extends Component {
   }
 
   render() {
-    if (memoryUtils.user && memoryUtils.user._id) {
-      return <Redirect to='/'/>
+    const user = this.props.user
+    if (user && user._id) {
+      return <Redirect to='/home'/>
     }
-    const {getFieldDecorator} = this.props.form
+    const msg = this.props.user.msg
+    const form = this.props.form
+    const {getFieldDecorator} = form
     return (
       <div className="login">
         <header className="login-header">
@@ -58,6 +56,7 @@ class Login extends Component {
           <h1>React项目: 后台管理系统</h1>
         </header>
         <section className="login-content">
+          <div className={msg ? 'error-msg show' : 'error-msg'}>{msg}</div>
           <h2>用户登录</h2>
           <Form onSubmit={this.handleSubmit} className="login-form">
             <Form.Item>
@@ -115,4 +114,8 @@ class Login extends Component {
  包装Form组件生成一个新的组件: Form(Login)
  新组件会向Form组件传递一个强大的对象属性: form
  */
-export default Form.create()(Login)
+const WarpLogin = Form.create()(Login)
+export default connect(
+  state => ({user: state.user}),
+  {login}
+)(WarpLogin)
